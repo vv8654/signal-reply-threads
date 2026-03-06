@@ -1,0 +1,67 @@
+You are building a Signal-style chat prototype. Implement iMessage-like “reply to message” behavior with threaded view for both DMs and group chats.
+
+GOAL
+- Users can long-press (mobile) / right-click (desktop) a message to “Reply”.
+- The composer shows a reply preview (quoted snippet + sender) like iMessage.
+- When sent, the new message displays a compact “reply bubble” above it that shows:
+  - Original sender name
+  - 1–2 line snippet of the original message
+  - (Optional) tiny thumbnail if original is an image
+- Tapping/clicking the reply bubble scrolls + highlights the original message.
+- If the original is deleted, show “Original message unavailable”.
+
+THREADS UX (iMessage-like)
+- Default: conversation remains linear, but replies are visually linked (reply bubble).
+- Add a “View Thread” action on the reply bubble that opens a right-side panel (desktop) or full-screen modal (mobile) showing:
+  - The root/original message at top
+  - All replies to that root message in chronological order
+  - A thread-specific composer that sends a reply into the thread (still appears in main timeline with reply bubble)
+- Thread panel supports group chats: show sender names + avatars.
+
+DATA MODEL
+- Each message object should include:
+  - id (string)
+  - chatId
+  - senderId, senderName
+  - createdAt
+  - type: "text" | "image" | "system"
+  - text (optional)
+  - mediaUrl (optional)
+  - replyToMessageId (optional)
+  - threadRootId (optional) // if replying to a reply, threadRootId should point to the original root
+
+LOGIC RULES
+- If replying to a message that already has threadRootId, set threadRootId to that root; otherwise root = message.id.
+- The thread view groups by threadRootId.
+- Main timeline rendering:
+  - If replyToMessageId exists, render the reply preview above the message.
+- Jump-to-original:
+  - Use refs/anchors to scroll to the original message and apply a temporary highlight animation.
+- Thread opening:
+  - Clicking “View Thread” opens thread for threadRootId (or message.id if it is root).
+
+EDGE CASES
+- Original message not loaded (pagination): fetch by id or show “Tap to load original”.
+- Deleted original: show “Original message unavailable”.
+- Very long message: truncate snippet with ellipsis.
+- Replying to images: show “Photo” + tiny thumb if available.
+- Accessibility: keyboard focus, aria labels for reply actions.
+
+DELIVERABLES
+1) Implement the UI + interactions above.
+2) Provide clean, commented code and a short README explaining:
+   - how replies work
+   - how threadRootId is assigned
+   - where to modify styling to match iMessage more closely
+
+STYLE (important)
+- Make it look like iMessage:
+  - Rounded message bubbles
+  - Reply preview uses a thin colored vertical bar + sender name + snippet (like iMessage)
+  - Subtle separators in thread panel
+- Keep the rest of the chat UI consistent with a Signal prototype theme.
+
+Before coding, inspect the current project structure and tell me:
+- which files you’ll modify
+- the new components/modules you’ll add
+Then implement.

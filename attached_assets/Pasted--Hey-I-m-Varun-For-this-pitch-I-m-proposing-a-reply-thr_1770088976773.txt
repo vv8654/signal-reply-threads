@@ -1,0 +1,53 @@
+“Hey, I’m Varun.
+For this pitch, I’m proposing a reply-threads experience in Signal, applied consistently to both DMs and group chats.
+
+The user I’m focused on is someone using Signal in active conversations, especially group chats where multiple topics happen at once.
+The problem is context switching. Today, Signal replies work by quoting a message and letting you tap to jump back to the original. That’s functional, but it breaks flow—when you jump back, you lose your place in the current conversation, and it’s hard to follow a single sub-topic across multiple replies.
+
+This matters because in busy chats, people are often responding to different messages at the same time.
+The insight is that “jump to original” solves locating a message, but it doesn’t solve tracking a thread. Users need a way to read one topic cleanly without re-scrolling or mentally stitching messages together.
+
+My proposed MVP is Reply Threads: when a user taps a reply preview, instead of jumping the main chat back in time, Signal opens a thread view that shows:
+
+the original message at the top
+
+all replies to that message underneath in chronological order
+
+a reply box that keeps responses attached to that thread
+
+Think Slack threads or iMessage-style reply threads—same idea: you can follow one topic without losing your position in the main chat.
+
+The goal of this MVP is to prove that threads reduce confusion in busy chats.
+Success metrics would be: fewer “jump back” actions, fewer long scrolls in group chats, increased reply-to-message usage, and a faster time-to-understand a reply chain, measured by how quickly users interact after opening a thread.
+
+From a build perspective, this is incremental. Signal already stores reply-to references between messages. The MVP would introduce a thread container UI that queries and displays messages that reference the same parent message.
+The biggest risk is UI complexity—threads could make Signal feel heavier. To mitigate that, I’d keep it opt-in per chat, and limit threads to replies to a single parent message rather than nested threads.
+
+Overall, this keeps Signal’s privacy model the same, but makes reply-heavy conversations dramatically easier to follow.”
+
+Stop.
+
+📝 WRITTEN PITCH (COPY-PASTE)
+
+Problem & User
+Signal users, especially in active group chats, struggle to follow sub-conversations when multiple people reply to different messages. While Signal supports quoted replies and jump-to-original, this breaks flow and makes it hard to track a single topic across multiple replies.
+
+Why This Matters
+Jump-to-original helps locate a message but does not create a readable thread. In busy chats, lack of threading increases cognitive load and makes conversations harder to follow.
+
+Proposed MVP
+
+Reply Threads: tapping a reply opens a thread view (original message + all replies)
+
+Thread reply box that keeps responses attached to the parent message
+
+Works consistently for both DMs and group chats (optional toggle per chat)
+
+Build Plan
+Signal already stores reply-to message references, so this MVP can reuse existing message relationships. Implement a thread UI that displays the parent message and queries all messages replying to it. Add a “View thread” entry point from the reply preview and a lightweight composer inside the thread. Measure success via reduced jump-back actions, reduced scroll distance, increased reply usage, and faster comprehension of reply chains.
+
+Risks
+
+Threads could increase UI complexity and clutter
+
+Thread discovery could be confusing without clear entry points
